@@ -1,0 +1,126 @@
+[gd_scene load_steps=19 format=3 uid="uid://c4gqgdooajpa2"]
+
+[ext_resource type="Script" path="res://movement.gd" id="1_evtwx"]
+[ext_resource type="Script" path="res://camera.gd" id="1_hyaln"]
+[ext_resource type="Script" path="res://log.gd" id="3_eosma"]
+[ext_resource type="PackedScene" uid="uid://1fwnfv6vcjri" path="res://vehicle_seat.tscn" id="4_wv5ox"]
+[ext_resource type="Script" path="res://vehicle_seat.gd" id="5_fnu20"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n0srq"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_x85vv"]
+sky_material = SubResource("ProceduralSkyMaterial_n0srq")
+
+[sub_resource type="Environment" id="Environment_pc018"]
+background_mode = 2
+sky = SubResource("Sky_x85vv")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y418l"]
+albedo_color = Color(0, 0.242031, 0.00952369, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8rdsi"]
+material = SubResource("StandardMaterial3D_y418l")
+size = Vector2(1, 1)
+center_offset = Vector3(-0.5, 0, 0)
+orientation = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xxcbr"]
+albedo_color = Color(0, 0.00306735, 0.418536, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pvu76"]
+material = SubResource("StandardMaterial3D_xxcbr")
+size = Vector2(1, 1)
+center_offset = Vector3(-0.5, 0, 0)
+orientation = 0
+
+[sub_resource type="MeshLibrary" id="MeshLibrary_uqx82"]
+item/0/name = "Ground"
+item/0/mesh = SubResource("PlaneMesh_8rdsi")
+item/0/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/shapes = []
+item/0/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/navigation_layers = 1
+item/1/name = "Water"
+item/1/mesh = SubResource("PlaneMesh_pvu76")
+item/1/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/1/shapes = []
+item/1/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/1/navigation_layers = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_krad0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_chpk0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wwa2d"]
+size = Vector3(3, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_powhc"]
+albedo_color = Color(0.323495, 0.159471, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_k8n1s"]
+material = SubResource("StandardMaterial3D_powhc")
+
+[node name="MovementTesting" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_pc018")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 20.5, 16, 1)
+fov = 60.0
+size = 20.0
+script = ExtResource("1_hyaln")
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = SubResource("MeshLibrary_uqx82")
+cell_size = Vector3(1, 1, 1)
+data = {
+"cells": PackedInt32Array(5, 65535, 851968, 5, 65534, 851968, 5, 65533, 851968, 0, 65533, 851968, 1, 65533, 851968, 2, 65533, 851968, 3, 65533, 851968, 4, 65533, 851968, 4, 65534, 851968, 4, 65535, 851968, 0, 65535, 851968, 1, 65535, 851968, 2, 65535, 851968, 3, 65535, 851968, 3, 65534, 851968, 2, 65534, 851968, 1, 65534, 851968, 0, 65534, 851968, 5, 65532, 851968, 5, 65531, 851968, 4, 65531, 851968, 3, 65531, 851968, 2, 65531, 851968, 1, 65531, 851968, 0, 65531, 851968, 0, 65532, 851968, 1, 65532, 851968, 2, 65532, 851968, 3, 65532, 851968, 4, 65532, 851968, 6, 65535, 65536, 6, 65534, 65536, 6, 65533, 65536, 6, 65532, 65536, 6, 65531, 65536, 7, 65531, 65536, 8, 65531, 65536, 9, 65531, 65536, 10, 65531, 65536, 10, 65532, 65536, 10, 65533, 65536, 10, 65534, 65536, 10, 65535, 65536, 9, 65535, 65536, 9, 65534, 65536, 9, 65533, 65536, 9, 65532, 65536, 8, 65532, 65536, 8, 65533, 65536, 8, 65534, 65536, 8, 65535, 65536, 7, 65535, 65536, 7, 65534, 65536, 7, 65533, 65536, 7, 65532, 65536, 21, 65535, 65536, 21, 65534, 65536, 21, 65533, 65536, 21, 65532, 65536, 21, 65531, 65536, 20, 65531, 65536, 19, 65531, 65536, 18, 65531, 65536, 17, 65531, 65536, 16, 65531, 65536, 15, 65531, 65536, 14, 65531, 65536, 13, 65531, 65536, 12, 65531, 65536, 12, 65532, 65536, 11, 65532, 65536, 11, 65531, 65536, 11, 65535, 65536, 12, 65535, 65536, 13, 65535, 65536, 14, 65535, 65536, 15, 65535, 65536, 16, 65535, 65536, 17, 65535, 65536, 18, 65535, 65536, 19, 65535, 65536, 20, 65535, 65536, 20, 65534, 65536, 20, 65533, 65536, 20, 65532, 65536, 19, 65532, 65536, 18, 65532, 65536, 17, 65532, 65536, 16, 65532, 65536, 15, 65532, 65536, 14, 65532, 65536, 13, 65532, 65536, 12, 65533, 65536, 11, 65533, 65536, 13, 65533, 65536, 14, 65533, 65536, 15, 65533, 65536, 16, 65533, 65536, 17, 65533, 65536, 18, 65533, 65536, 19, 65533, 65536, 19, 65534, 65536, 18, 65534, 65536, 17, 65534, 65536, 16, 65534, 65536, 15, 65534, 65536, 14, 65534, 65536, 13, 65534, 65536, 11, 65534, 65536, 12, 65534, 65536, 22, 65535, 65536, 22, 65534, 65536, 22, 65533, 65536, 22, 65532, 65536, 22, 65531, 65536, 23, 65531, 65536, 24, 65531, 65536, 25, 65531, 65536, 26, 65531, 65536, 27, 65531, 65536, 28, 65531, 65536, 29, 65531, 65536, 30, 65531, 65536, 31, 65531, 65536, 32, 65531, 65536, 33, 65531, 65536, 34, 65531, 65536, 35, 65531, 65536, 36, 65531, 65536, 37, 65531, 65536, 38, 65531, 65536, 39, 65531, 65536, 39, 65532, 65536, 39, 65533, 65536, 39, 65534, 65536, 39, 65535, 65536, 38, 65535, 65536, 37, 65535, 65536, 36, 65535, 65536, 35, 65535, 65536, 34, 65535, 65536, 33, 65535, 65536, 32, 65535, 65536, 31, 65535, 65536, 30, 65535, 65536, 29, 65535, 65536, 28, 65535, 65536, 27, 65535, 65536, 26, 65535, 65536, 25, 65535, 65536, 24, 65535, 65536, 23, 65535, 65536, 23, 65534, 65536, 23, 65533, 65536, 23, 65532, 65536, 24, 65532, 65536, 25, 65532, 65536, 26, 65532, 65536, 27, 65532, 65536, 28, 65532, 65536, 29, 65532, 65536, 30, 65532, 65536, 31, 65532, 65536, 32, 65532, 65536, 33, 65532, 65536, 34, 65532, 65536, 35, 65532, 65536, 36, 65532, 65536, 37, 65532, 65536, 38, 65532, 65536, 38, 65533, 65536, 37, 65533, 65536, 36, 65533, 65536, 35, 65533, 65536, 34, 65533, 65536, 33, 65533, 65536, 32, 65533, 65536, 31, 65533, 65536, 30, 65533, 65536, 29, 65533, 65536, 28, 65533, 65536, 27, 65533, 65536, 26, 65533, 65536, 25, 65533, 65536, 24, 65533, 65536, 24, 65534, 65536, 25, 65534, 65536, 26, 65534, 65536, 27, 65534, 65536, 28, 65534, 65536, 29, 65534, 65536, 30, 65534, 65536, 31, 65534, 65536, 32, 65534, 65536, 33, 65534, 65536, 34, 65534, 65536, 35, 65534, 65536, 36, 65534, 65536, 37, 65534, 65536, 38, 65534, 65536)
+}
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -2)
+script = ExtResource("1_evtwx")
+
+[node name="Collision" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, -0.5)
+shape = SubResource("BoxShape3D_krad0")
+
+[node name="Mesh" type="MeshInstance3D" parent="Player/Collision"]
+mesh = SubResource("BoxMesh_chpk0")
+skeleton = NodePath("../..")
+
+[node name="Log" type="StaticBody3D" parent="." node_paths=PackedStringArray("seats")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -1, -5)
+script = ExtResource("3_eosma")
+start_position = Vector3(0, -1, -5)
+end_position = Vector3(37, -1, -5)
+number_of_seats = 3
+seats = [NodePath("Seat 1"), NodePath("Seat 2"), NodePath("Seat 3")]
+
+[node name="Collision" type="CollisionShape3D" parent="Log"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.5, -0.5)
+shape = SubResource("BoxShape3D_wwa2d")
+
+[node name="Mesh" type="MeshInstance3D" parent="Log/Collision"]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_k8n1s")
+
+[node name="Seat 1" type="Node3D" parent="Log" instance=ExtResource("4_wv5ox")]
+script = ExtResource("5_fnu20")
+
+[node name="Seat 2" type="Node3D" parent="Log" instance=ExtResource("4_wv5ox")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+script = ExtResource("5_fnu20")
+
+[node name="Seat 3" type="Node3D" parent="Log" instance=ExtResource("4_wv5ox")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+script = ExtResource("5_fnu20")
