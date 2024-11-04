@@ -1,10 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://c4gqgdooajpa2"]
+[gd_scene load_steps=13 format=3 uid="uid://c4gqgdooajpa2"]
 
-[ext_resource type="Script" path="res://movement.gd" id="1_evtwx"]
+[ext_resource type="Script" path="res://player.gd" id="1_evtwx"]
 [ext_resource type="Script" path="res://camera.gd" id="1_hyaln"]
-[ext_resource type="Script" path="res://log.gd" id="3_eosma"]
-[ext_resource type="PackedScene" uid="uid://1fwnfv6vcjri" path="res://vehicle_seat.tscn" id="4_wv5ox"]
-[ext_resource type="Script" path="res://vehicle_seat.gd" id="5_fnu20"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n0srq"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -55,15 +52,6 @@ item/1/navigation_layers = 1
 
 [sub_resource type="BoxMesh" id="BoxMesh_chpk0"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_wwa2d"]
-size = Vector3(3, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_powhc"]
-albedo_color = Color(0.323495, 0.159471, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_k8n1s"]
-material = SubResource("StandardMaterial3D_powhc")
-
 [node name="MovementTesting" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -74,7 +62,7 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 20.5, 16, 1)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 20.5, 22, 1)
 fov = 60.0
 size = 20.0
 script = ExtResource("1_hyaln")
@@ -97,30 +85,3 @@ shape = SubResource("BoxShape3D_krad0")
 [node name="Mesh" type="MeshInstance3D" parent="Player/Collision"]
 mesh = SubResource("BoxMesh_chpk0")
 skeleton = NodePath("../..")
-
-[node name="Log" type="StaticBody3D" parent="." node_paths=PackedStringArray("seats")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -1, -5)
-script = ExtResource("3_eosma")
-start_position = Vector3(0, -1, -5)
-end_position = Vector3(37, -1, -5)
-number_of_seats = 3
-seats = [NodePath("Seat 1"), NodePath("Seat 2"), NodePath("Seat 3")]
-
-[node name="Collision" type="CollisionShape3D" parent="Log"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.5, -0.5)
-shape = SubResource("BoxShape3D_wwa2d")
-
-[node name="Mesh" type="MeshInstance3D" parent="Log/Collision"]
-transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("BoxMesh_k8n1s")
-
-[node name="Seat 1" type="Node3D" parent="Log" instance=ExtResource("4_wv5ox")]
-script = ExtResource("5_fnu20")
-
-[node name="Seat 2" type="Node3D" parent="Log" instance=ExtResource("4_wv5ox")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
-script = ExtResource("5_fnu20")
-
-[node name="Seat 3" type="Node3D" parent="Log" instance=ExtResource("4_wv5ox")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
-script = ExtResource("5_fnu20")
