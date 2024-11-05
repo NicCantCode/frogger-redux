@@ -1,10 +1,11 @@
 extends Camera3D
 
 @onready var player: Player = $"../Player"
+@export var player_offset: Vector3
 
 func _ready() -> void:
-	global_position = Vector3(player.global_position.x + 0.5, global_position.y, player.global_position.z + 3)
+	global_position = player.global_position + player_offset
 
 
 func _process(delta: float) -> void:
-	global_position = Vector3(player.global_position.x + 0.5, global_position.y, player.global_position.z + 3)
+	global_position = player.global_position + player_offset

@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://c4gqgdooajpa2"]
+[gd_scene load_steps=18 format=3 uid="uid://c4gqgdooajpa2"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_evtwx"]
 [ext_resource type="Script" path="res://camera.gd" id="1_hyaln"]
+[ext_resource type="Script" path="res://vehicle.gd" id="3_xk0xg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n0srq"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -52,6 +53,19 @@ item/1/navigation_layers = 1
 
 [sub_resource type="BoxMesh" id="BoxMesh_chpk0"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_n2btr"]
+size = Vector3(3, 0.5, 0.75)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xnl6s"]
+size = Vector3(3, 1, 0.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_odn4d"]
+albedo_color = Color(0.235242, 0.0879531, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sugch"]
+material = SubResource("StandardMaterial3D_odn4d")
+size = Vector3(3, 1, 0.75)
+
 [node name="MovementTesting" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -66,6 +80,7 @@ transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 20.5, 22, 
 fov = 60.0
 size = 20.0
 script = ExtResource("1_hyaln")
+player_offset = Vector3(0.5, 22, 3)
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = SubResource("MeshLibrary_uqx82")
@@ -85,3 +100,32 @@ shape = SubResource("BoxShape3D_krad0")
 [node name="Mesh" type="MeshInstance3D" parent="Player/Collision"]
 mesh = SubResource("BoxMesh_chpk0")
 skeleton = NodePath("../..")
+
+[node name="Vehicle" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -5)
+script = ExtResource("3_xk0xg")
+
+[node name="Detection Area" type="Area3D" parent="Vehicle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.25, -0.5)
+
+[node name="Collision" type="CollisionShape3D" parent="Vehicle/Detection Area"]
+shape = SubResource("BoxShape3D_n2btr")
+
+[node name="Static Body" type="StaticBody3D" parent="Vehicle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.5, -0.5)
+
+[node name="Collision" type="CollisionShape3D" parent="Vehicle/Static Body"]
+shape = SubResource("BoxShape3D_xnl6s")
+
+[node name="Mesh" type="MeshInstance3D" parent="Vehicle/Static Body"]
+mesh = SubResource("BoxMesh_sugch")
+
+[node name="Starting Point" type="Marker3D" parent="Vehicle"]
+
+[node name="Ending Point" type="Marker3D" parent="Vehicle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 0, 0)
+
+[connection signal="body_entered" from="Vehicle/Detection Area" to="Player" method="_on_vehicle_entered"]
+[connection signal="body_entered" from="Vehicle/Detection Area" to="Vehicle" method="_on_vehicle_entered"]
+[connection signal="body_exited" from="Vehicle/Detection Area" to="Player" method="_on_vehicle_exited"]
+[connection signal="body_exited" from="Vehicle/Detection Area" to="Vehicle" method="_on_vehicle_exited"]
